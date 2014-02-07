@@ -6,7 +6,7 @@ import com.gugu42.lwjgl.collision.utils.Vector;
 public abstract class EntityCollideable extends Entity {
 
 	protected AABB hitbox;
-	protected Vector position;
+	protected Vector position = new Vector();
 	
 	/**
 	 * Entity that has a hitbox
@@ -23,7 +23,7 @@ public abstract class EntityCollideable extends Entity {
 	}
 	
 	@Override
-	public void update(){
+	public void update(int delta){
 		hitbox.update(position);
 	}
 

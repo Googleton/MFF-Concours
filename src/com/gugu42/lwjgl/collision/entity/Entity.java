@@ -6,6 +6,6 @@ public abstract class Entity {
 	
 	public abstract void render();
 	
-	public abstract void update();
+	public abstract void update(int delta);
 	
 }
