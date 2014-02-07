@@ -1,10 +1,13 @@
 package com.gugu42.lwjgl.collision;
 
+import java.awt.Font;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.Sys;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.TrueTypeFont;
 
 import com.gugu42.lwjgl.collision.entity.DummyEntity;
 import com.gugu42.lwjgl.collision.entity.EntityManager;
@@ -13,9 +16,11 @@ import com.gugu42.lwjgl.collision.entity.Player;
 public class GameClassAABB {
 
 	private long lastFrame;
-	
-	public Player player = new Player(10, 10, 150, 150);
-	public DummyEntity dummy = new DummyEntity(10, 10, 280, 280);
+
+	public static TrueTypeFont font;
+
+	public Player player = new Player(100, 100, 150, 150);
+	public DummyEntity dummy = new DummyEntity(100, 100, 280, 280);
 	public EntityManager entityManager = new EntityManager();
 
 	public void start() {
@@ -27,6 +32,9 @@ public class GameClassAABB {
 			System.err.println("Display wasn't initialized correctly.");
 			System.exit(1);
 		}
+
+		Font awtFont = new Font("Times New Roman", Font.BOLD, 24);
+		font = new TrueTypeFont(awtFont, false);
 
 		initGL();
 
@@ -53,9 +61,20 @@ public class GameClassAABB {
 	}
 
 	public void initGL() {
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
+		GL11.glDisable(GL11.GL_DEPTH_TEST);
+		GL11.glDisable(GL11.GL_LIGHTING);
+
+		GL11.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+		GL11.glClearDepth(1);
+
+		GL11.glViewport(0, 0, 1280, 720);
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
+
 		GL11.glMatrixMode(GL11.GL_PROJECTION);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, 1280, 0, 720, 1, -1);
+		GL11.glOrtho(0, 1280, 720, 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	}
 
@@ -67,9 +86,6 @@ public class GameClassAABB {
 	public void update() {
 		int delta = getDelta();
 		entityManager.update(delta);
-		if(entityManager.collisionCheck()){
-			//System.out.println("Collision !");
-		}
 	}
 
 	public static void main(String[] args) {

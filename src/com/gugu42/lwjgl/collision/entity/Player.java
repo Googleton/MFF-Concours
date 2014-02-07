@@ -11,16 +11,54 @@ public class Player extends EntityCollideable {
 
 	public void input(int delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			this.position.y += 0.1f * delta;
+			float dy = this.position.y;
+			dy -= 0.1 * delta;
+			float oldY = this.position.y;
+			hitbox.center.y = dy;
+			if (!EntityManager.collisionCheck(this)) {
+				this.position.y = dy;
+				hitbox.center.y = position.y;
+			} else {
+				this.position.y = oldY;
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			this.position.y -= 0.1f * delta;
+			float dy = this.position.y;
+			dy += 0.1 * delta;
+			float oldY = this.position.y;
+			hitbox.center.y = dy;
+			if (!EntityManager.collisionCheck(this)) {
+				this.position.y = dy;
+				hitbox.center.y = position.y;
+			} else {
+				this.position.y = oldY;
+			}
+
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-			this.position.x -= 0.1f * delta;
+			float dx = this.position.x;
+			dx -= 0.1 * delta;
+			float oldX = this.position.x;
+			hitbox.center.x = dx;
+			if (!EntityManager.collisionCheck(this)) {
+				this.position.x = dx;
+				hitbox.center.x = position.x;
+			} else {
+				this.position.x = oldX;
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			this.position.x += 0.1f * delta;
+			float dx = this.position.x;
+			dx += 0.1 * delta;
+			float oldX = this.position.x;
+			hitbox.center.x = dx;
+			if (!EntityManager.collisionCheck(this)) {
+				this.position.x = dx;
+				hitbox.center.x = position.x;
+			} else {
+				this.position.x = oldX;
+			}
+
 		}
 	}
 
@@ -46,6 +84,7 @@ public class Player extends EntityCollideable {
 	public void update(int delta) {
 		super.update(delta);
 		input(delta);
+
 	}
 
 }

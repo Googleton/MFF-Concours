@@ -15,6 +15,8 @@ public class DummyEntity extends EntityCollideable {
 
 	@Override
 	public void render() {
+//		GameClassAABB.font.drawString(10, 40, "HitBox dummy : X  : " + hitbox.center.x + "  Y : " + hitbox.center.y);
+		
 		GL11.glPushMatrix();
 
 		GL11.glBegin(GL11.GL_QUADS);
