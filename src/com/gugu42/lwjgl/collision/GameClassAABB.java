@@ -12,10 +12,13 @@ import org.newdawn.slick.TrueTypeFont;
 import com.gugu42.lwjgl.collision.entity.DummyEntity;
 import com.gugu42.lwjgl.collision.entity.EntityManager;
 import com.gugu42.lwjgl.collision.entity.Player;
+import com.gugu42.lwjgl.collision.entity.Tile;
 
 public class GameClassAABB {
 
 	private long lastFrame;
+	
+	public static World world = new World();
 
 	public static TrueTypeFont font;
 
@@ -23,6 +26,8 @@ public class GameClassAABB {
 	public DummyEntity dummy = new DummyEntity(100, 100, 280, 280);
 	public EntityManager entityManager = new EntityManager();
 
+	public Tile testTile = new Tile(150, 450);
+	
 	public void start() {
 		try {
 			Display.setDisplayMode(new DisplayMode(1280, 720));
@@ -41,6 +46,7 @@ public class GameClassAABB {
 		entityManager.registerEntity(player);
 		entityManager.registerEntity(dummy);
 		entityManager.init();
+		world.tiles.add(testTile);
 		while (!Display.isCloseRequested()) {
 			render();
 			update();
@@ -81,6 +87,7 @@ public class GameClassAABB {
 	public void render() {
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 		entityManager.render();
+		testTile.render();
 	}
 
 	public void update() {

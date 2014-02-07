@@ -3,7 +3,7 @@ package com.gugu42.lwjgl.collision.entity;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-public class Player extends EntityCollideable {
+public class Player extends Entity {
 
 	public Player(int width, int height, int x, int y) {
 		super(width, height, x, y);
@@ -11,53 +11,17 @@ public class Player extends EntityCollideable {
 
 	public void input(int delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			float dy = this.position.y;
-			dy -= 0.1 * delta;
-			float oldY = this.position.y;
-			hitbox.center.y = dy;
-			if (!EntityManager.collisionCheck(this)) {
-				this.position.y = dy;
-				hitbox.center.y = position.y;
-			} else {
-				this.position.y = oldY;
-			}
+			this.position.y -= 0.1 * delta;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			float dy = this.position.y;
-			dy += 0.1 * delta;
-			float oldY = this.position.y;
-			hitbox.center.y = dy;
-			if (!EntityManager.collisionCheck(this)) {
-				this.position.y = dy;
-				hitbox.center.y = position.y;
-			} else {
-				this.position.y = oldY;
-			}
-
+			if(canGoto(this.position.x, this.position.y += 0.1*delta))
+			this.position.y += 0.1 * delta;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-			float dx = this.position.x;
-			dx -= 0.1 * delta;
-			float oldX = this.position.x;
-			hitbox.center.x = dx;
-			if (!EntityManager.collisionCheck(this)) {
-				this.position.x = dx;
-				hitbox.center.x = position.x;
-			} else {
-				this.position.x = oldX;
-			}
+			this.position.x -= 0.1 * delta;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			float dx = this.position.x;
-			dx += 0.1 * delta;
-			float oldX = this.position.x;
-			hitbox.center.x = dx;
-			if (!EntityManager.collisionCheck(this)) {
-				this.position.x = dx;
-				hitbox.center.x = position.x;
-			} else {
-				this.position.x = oldX;
-			}
+			this.position.x += 0.1 * delta;
 
 		}
 	}
@@ -72,10 +36,10 @@ public class Player extends EntityCollideable {
 		GL11.glPushMatrix();
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor3f(1, 1, 1f);
-		GL11.glVertex2f(this.position.x - 50, this.position.y - 50);
-		GL11.glVertex2f(this.position.x + 50, this.position.y - 50);
-		GL11.glVertex2f(this.position.x + 50, this.position.y + 50);
-		GL11.glVertex2f(this.position.x - 50, this.position.y + 50);
+		GL11.glVertex2f(this.position.x - (w / 2), this.position.y - (h / 2));
+		GL11.glVertex2f(this.position.x + (w / 2), this.position.y - (h / 2));
+		GL11.glVertex2f(this.position.x + (w / 2), this.position.y + (h / 2));
+		GL11.glVertex2f(this.position.x - (w / 2), this.position.y + (h / 2));
 		GL11.glEnd();
 		GL11.glPopMatrix();
 	}
@@ -84,7 +48,13 @@ public class Player extends EntityCollideable {
 	public void update(int delta) {
 		super.update(delta);
 		input(delta);
+		
+	}
 
+	@Override
+	public void onCollide(Entity entity) {
+//		System.out.println("[PLAYER] AHHHHHHH IT TOUCHES ME !1!!1!1!1!11!!!1!!1!!");
+		
 	}
 
 }

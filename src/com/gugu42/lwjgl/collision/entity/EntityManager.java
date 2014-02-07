@@ -3,13 +3,14 @@ package com.gugu42.lwjgl.collision.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.gugu42.lwjgl.collision.utils.CollisionLibrary;
+import com.gugu42.lwjgl.collision.GameClassAABB;
+import com.gugu42.lwjgl.collision.World;
 
 public class EntityManager {
 
 	// Entity[] entities;
 	List<Entity> entities = new ArrayList<Entity>();
-	static List<EntityCollideable> collEntity = new ArrayList<EntityCollideable>();
+	public World world = GameClassAABB.world;
 
 	public EntityManager() {
 
@@ -27,43 +28,6 @@ public class EntityManager {
 		}
 	}
 
-	public static boolean collisionCheck() {
-		for (EntityCollideable entity1 : collEntity) {
-			for (EntityCollideable entity2 : collEntity) {
-				if (entity1 != entity2) {
-
-					EntityCollideable ent1 = (EntityCollideable) entity1;
-
-					EntityCollideable ent2 = (EntityCollideable) entity2;
-
-					if (CollisionLibrary.testAABBAABB(ent1.hitbox, ent2.hitbox)) {
-						return true;
-					} else {
-						return false;
-					}
-				}
-
-			}
-		}
-		return false;
-	}
-
-	public static boolean collisionCheck(EntityCollideable entity1) {
-
-		for (EntityCollideable entity2 : collEntity) {
-			if (entity1 != entity2) {
-				if (CollisionLibrary.testAABBAABB(entity1.hitbox,
-						entity2.hitbox)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-
-		}
-		return false;
-	}
-
 	public void render() {
 		for (Entity entity : entities) {
 			entity.render();
@@ -72,9 +36,7 @@ public class EntityManager {
 
 	public void registerEntity(Entity entity) {
 		entities.add(entity);
-		if (entity instanceof EntityCollideable) {
-			collEntity.add((EntityCollideable) entity);
-		}
+		world.addEntity(entity);
 	}
 
 }
