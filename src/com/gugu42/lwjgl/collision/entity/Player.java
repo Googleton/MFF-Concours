@@ -1,5 +1,5 @@
 package com.gugu42.lwjgl.collision.entity;
 
-public class Entity {
+public class Player extends Entity{
 
 }
