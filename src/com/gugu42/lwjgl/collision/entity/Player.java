@@ -11,18 +11,40 @@ public class Player extends Entity {
 
 	public void input(int delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			this.position.y -= 0.1 * delta;
+			float dy = position.y;
+			float oldY = position.y;
+			dy -= 0.1 * delta;
+			if (canGoto(this.position.x, dy * 2))
+				this.position.y -= 0.1 * delta;
+			else
+				this.position.y = oldY;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			if(canGoto(this.position.x, this.position.y += 0.1*delta))
-			this.position.y += 0.1 * delta;
+			float dy = position.y;
+			float oldY = position.y;
+			dy += 0.1 * delta;
+			if (canGoto(this.position.x, dy))
+				this.position.y += 0.1 * delta;
+			else
+				this.position.y = oldY;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-			this.position.x -= 0.1 * delta;
+			float dx = position.x;
+			float oldX = position.x;
+			dx -= 0.1 * delta;
+			if (canGoto(dx, this.position.y))
+				this.position.x -= 0.1 * delta;
+			else
+				this.position.x = oldX;
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			this.position.x += 0.1 * delta;
-
+			float dx = position.x;
+			float oldX = position.x;
+			dx += 0.1 * delta;
+			if (canGoto(dx, this.position.y))
+				this.position.x += 0.1 * delta;
+			else
+				this.position.x = oldX;
 		}
 	}
 
@@ -48,13 +70,13 @@ public class Player extends Entity {
 	public void update(int delta) {
 		super.update(delta);
 		input(delta);
-		
+
 	}
 
 	@Override
 	public void onCollide(Entity entity) {
-//		System.out.println("[PLAYER] AHHHHHHH IT TOUCHES ME !1!!1!1!1!11!!!1!!1!!");
-		
+		// System.out.println("[PLAYER] AHHHHHHH IT TOUCHES ME !1!!1!1!1!11!!!1!!1!!");
+
 	}
 
 }

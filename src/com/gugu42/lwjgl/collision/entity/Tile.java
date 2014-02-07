@@ -5,12 +5,15 @@ import java.util.List;
 import org.lwjgl.opengl.GL11;
 
 import com.gugu42.lwjgl.collision.World;
+import com.gugu42.lwjgl.collision.utils.AABB;
 import com.gugu42.lwjgl.collision.utils.Vector;
 
 public class Tile {
 
 	public static int TILE_WIDTH = 16;
 	public static int TILE_HEIGHT = 16;
+	
+	public AABB aabb;
 
 	public Vector position = new Vector();
 
@@ -20,16 +23,17 @@ public class Tile {
 		this.position.x = x;
 		this.position.y = y;
 		this.isSolid = true;
+		aabb = new AABB(x + 16, y + 16, TILE_WIDTH / 2, TILE_HEIGHT / 2);
 	}
 
 	public void render() {
 		GL11.glPushMatrix();
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor3f(0f, 1, 1f);
-		GL11.glVertex2f(this.position.x - (TILE_WIDTH / 2), this.position.y - (TILE_HEIGHT / 2));
-		GL11.glVertex2f(this.position.x + (TILE_WIDTH / 2), this.position.y - (TILE_HEIGHT / 2));
-		GL11.glVertex2f(this.position.x + (TILE_WIDTH / 2), this.position.y + (TILE_HEIGHT / 2));
-		GL11.glVertex2f(this.position.x - (TILE_WIDTH / 2), this.position.y + (TILE_HEIGHT / 2));
+		GL11.glVertex2f(this.position.x - (TILE_WIDTH * 2), this.position.y - (TILE_HEIGHT * 2));
+		GL11.glVertex2f(this.position.x + (TILE_WIDTH * 2), this.position.y - (TILE_HEIGHT * 2));
+		GL11.glVertex2f(this.position.x + (TILE_WIDTH * 2), this.position.y + (TILE_HEIGHT * 2));
+		GL11.glVertex2f(this.position.x - (TILE_WIDTH * 2), this.position.y + (TILE_HEIGHT * 2));
 		GL11.glEnd();
 		GL11.glPopMatrix();
 	}
@@ -56,6 +60,10 @@ public class Tile {
 		return null;
 	}
 
+	public AABB clipAABB() {
+		return aabb.set(this.position.x, this.position.y, TILE_WIDTH, TILE_HEIGHT);
+	}
+	
 	public static Tile getTile(Tile tileAt) {
 		return tileAt;
 	}

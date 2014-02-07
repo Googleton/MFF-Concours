@@ -65,22 +65,29 @@ public abstract class Entity {
 
 	public boolean canGoto(float posX, float posY) {
 		if (!noclip)
-			for (int x1 = 0; x1 < w; x1++) {
-				for (int y1 = 0; y1 < h; y1++) {
-					float px = ((float) x1 + posX) / Tile.TILE_WIDTH;
-					float py = ((float) y1 + posY) / Tile.TILE_HEIGHT;
-
-					int gridX = (int) (px >= 0 ? Math.floor(px) : Math
-							.floor(px));
-					int gridY = (int) (py);
-					Tile t = Tile.getTile(world.getTileAt(gridX, gridY));
-					if(t == null){
-						return true;
-					}
-					if (t!= null && t.isSolid())
-						return false;
+			// for (int x1 = 0; x1 < w; x1++) {
+			// for (int y1 = 0; y1 < h; y1++) {
+			// float px = ((float) x1 + posX) / Tile.TILE_WIDTH;
+			// float py = ((float) y1 + posY) / Tile.TILE_HEIGHT;
+			//
+			// int gridX = (int) (px >= 0 ? Math.floor(px) : Math
+			// .floor(px));
+			// int gridY = (int) (py);
+			// Tile t = Tile.getTile(world.getTileAt(gridX, gridY));
+			// if (t == null) {
+			// return true;
+			// }
+			// if (t != null && t.isSolid())
+			// return false;
+			for (Tile tile : world.tiles) {
+				if (tile.clipAABB().collide(clipAABB())) {
+					return false;
+				} else {
+					return true;
 				}
 			}
+		// }
+		// }
 		return true;
 	}
 }
