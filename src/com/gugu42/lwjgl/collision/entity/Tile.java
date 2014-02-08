@@ -23,23 +23,23 @@ public class Tile {
 		this.position.x = x;
 		this.position.y = y;
 		this.isSolid = true;
-		aabb = new AABB(x + 16, y + 16, TILE_WIDTH / 2, TILE_HEIGHT / 2);
+		aabb = new AABB(TILE_WIDTH, TILE_HEIGHT);
 	}
 
 	public void render() {
 		GL11.glPushMatrix();
 		GL11.glBegin(GL11.GL_QUADS);
 		GL11.glColor3f(0f, 1, 1f);
-		GL11.glVertex2f(this.position.x - (TILE_WIDTH * 2), this.position.y - (TILE_HEIGHT * 2));
-		GL11.glVertex2f(this.position.x + (TILE_WIDTH * 2), this.position.y - (TILE_HEIGHT * 2));
-		GL11.glVertex2f(this.position.x + (TILE_WIDTH * 2), this.position.y + (TILE_HEIGHT * 2));
-		GL11.glVertex2f(this.position.x - (TILE_WIDTH * 2), this.position.y + (TILE_HEIGHT * 2));
+		GL11.glVertex2f(this.position.x - TILE_WIDTH, this.position.y - TILE_HEIGHT);
+		GL11.glVertex2f(this.position.x + TILE_WIDTH, this.position.y - TILE_HEIGHT);
+		GL11.glVertex2f(this.position.x + TILE_WIDTH, this.position.y + TILE_HEIGHT);
+		GL11.glVertex2f(this.position.x - TILE_WIDTH, this.position.y + TILE_HEIGHT);
 		GL11.glEnd();
 		GL11.glPopMatrix();
 	}
 
 	public void init() {
-
+		aabb.update(position);
 	}
 
 	public boolean isSolid() {
@@ -58,10 +58,6 @@ public class Tile {
 			}
 		}
 		return null;
-	}
-
-	public AABB clipAABB() {
-		return aabb.set(this.position.x, this.position.y, TILE_WIDTH, TILE_HEIGHT);
 	}
 	
 	public static Tile getTile(Tile tileAt) {

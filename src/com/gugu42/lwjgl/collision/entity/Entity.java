@@ -6,6 +6,7 @@ import java.util.List;
 import com.gugu42.lwjgl.collision.GameClassAABB;
 import com.gugu42.lwjgl.collision.World;
 import com.gugu42.lwjgl.collision.utils.AABB;
+import com.gugu42.lwjgl.collision.utils.CollisionLibrary;
 import com.gugu42.lwjgl.collision.utils.Vector;
 
 public abstract class Entity {
@@ -22,7 +23,7 @@ public abstract class Entity {
 	protected List<Entity> alreadyCollisionsChecked = new ArrayList<Entity>();
 
 	public Entity(int width, int height, int x, int y) {
-		this.aabb = new AABB(x, y, width, height);
+		this.aabb = new AABB(width, height);
 		this.w = width;
 		this.h = height;
 		this.position.x = x;
@@ -34,60 +35,59 @@ public abstract class Entity {
 	public abstract void render();
 
 	public void update(int delta) {
-		aabb.setX(this.position.x);
-		aabb.setY(this.position.y);
+		aabb.update(position);
 		if (!noclip) {
-			this.checkCollisions();
+//			this.checkCollisions(this);
 		}
 	}
 
-	public abstract void onCollide(Entity entity);
-
-	public AABB clipAABB() {
-		return aabb.set(this.position.x, this.position.y, w, h);
-	}
-
-	public void checkCollisions() {
+	public boolean checkCollisions() {
 		for (int i = 0; i < world.entities.size(); i++) {
-			Entity e = world.entities.get(i);
-			if (e != this)
-				if (e != null && !alreadyCollisionsChecked.contains(e)) {
-					if (e.clipAABB().collide(clipAABB())) {
-						e.onCollide(this);
-						this.onCollide(e);
+			for (Entity entity : world.entities) {
+				for (Entity entity2 : world.entities) {
+					if (entity != entity2) {
+						if (CollisionLibrary.testAABBAABB(entity.aabb,
+								entity2.aabb)) {
+							return true;
+						} else {
+							return false;
+						}
 					}
-					e.alreadyCollisionsChecked.add(this);
 				}
+			}
 		}
-		// doBlockCollisions();
-		alreadyCollisionsChecked.clear();
+		return false;
+
 	}
 
-	public boolean canGoto(float posX, float posY) {
-		if (!noclip)
-			// for (int x1 = 0; x1 < w; x1++) {
-			// for (int y1 = 0; y1 < h; y1++) {
-			// float px = ((float) x1 + posX) / Tile.TILE_WIDTH;
-			// float py = ((float) y1 + posY) / Tile.TILE_HEIGHT;
-			//
-			// int gridX = (int) (px >= 0 ? Math.floor(px) : Math
-			// .floor(px));
-			// int gridY = (int) (py);
-			// Tile t = Tile.getTile(world.getTileAt(gridX, gridY));
-			// if (t == null) {
-			// return true;
-			// }
-			// if (t != null && t.isSolid())
-			// return false;
-			for (Tile tile : world.tiles) {
-				if (tile.clipAABB().collide(clipAABB())) {
+	public boolean checkCollisions(Entity entity) {
+		for (int i = 0; i < world.entities.size(); i++) {
+			for (Entity entity2 : world.entities) {
+				if (entity != entity2) {
+					if (CollisionLibrary
+							.testAABBAABB(entity.aabb, entity2.aabb)) {
+						return true;
+					} else {
+						return false;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean canGoto(int x, int y, Entity entity){
+		for(int i=0; i < world.entities.size(); i++){
+			for(Tile tiles : world.tiles){
+				if(CollisionLibrary.testAABBAABB(entity.aabb, tiles.aabb)){
 					return false;
 				} else {
 					return true;
 				}
 			}
-		// }
-		// }
-		return true;
+		}
+		return false;
 	}
+	public abstract void onCollide(Entity entity);
+
 }

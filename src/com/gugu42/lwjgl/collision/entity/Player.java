@@ -11,40 +11,57 @@ public class Player extends Entity {
 
 	public void input(int delta) {
 		if (Keyboard.isKeyDown(Keyboard.KEY_Z)) {
-			float dy = position.y;
-			float oldY = position.y;
-			dy -= 0.1 * delta;
-			if (canGoto(this.position.x, dy * 2))
-				this.position.y -= 0.1 * delta;
-			else
+			int dy = (int) this.position.y;
+			float oldY = this.position.y;
+			dy -= 0.1f * delta;
+			this.aabb.center.y = dy;
+			if (!checkCollisions(this)) {
+				this.position.y -= 0.1f * delta;
+				this.aabb.center.y = this.position.y;
+			} else {
 				this.position.y = oldY;
+				this.aabb.center.y = this.position.y;
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
-			float dy = position.y;
-			float oldY = position.y;
-			dy += 0.1 * delta;
-			if (canGoto(this.position.x, dy))
-				this.position.y += 0.1 * delta;
-			else
+			int dy = (int) this.position.y;
+			float oldY = this.position.y;
+			dy += 0.1f * delta;
+			this.aabb.center.y = dy;
+
+			if (!checkCollisions(this)) {
+				this.position.y += 0.1f * delta;
+				this.aabb.center.y = this.position.y;
+			} else {
 				this.position.y = oldY;
+				this.aabb.center.y = this.position.y;
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
-			float dx = position.x;
-			float oldX = position.x;
-			dx -= 0.1 * delta;
-			if (canGoto(dx, this.position.y))
-				this.position.x -= 0.1 * delta;
-			else
+			int dx = (int) this.position.x;
+			float oldX = this.position.x;
+			dx -= 0.1f * delta;
+			this.aabb.center.x = dx;
+			if (!checkCollisions(this)) {
+				this.position.x -= 0.1f * delta;
+				this.aabb.center.x = this.position.x;
+			} else {
 				this.position.x = oldX;
+				this.aabb.center.x = this.position.x;
+			}
 		}
 		if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
-			float dx = position.x;
-			float oldX = position.x;
-			dx += 0.1 * delta;
-			if (canGoto(dx, this.position.y))
-				this.position.x += 0.1 * delta;
-			else
+			int dx = (int) this.position.x;
+			float oldX = this.position.x;
+			dx += 0.1f * delta;
+			this.aabb.center.x = dx;
+			if (!checkCollisions(this)) {
+				this.position.x += 0.1f * delta;
+				this.aabb.center.x = this.position.x;
+			} else {
 				this.position.x = oldX;
+				this.aabb.center.x = this.position.x;
+			}
 		}
 	}
 
@@ -75,7 +92,6 @@ public class Player extends Entity {
 
 	@Override
 	public void onCollide(Entity entity) {
-		// System.out.println("[PLAYER] AHHHHHHH IT TOUCHES ME !1!!1!1!1!11!!!1!!1!!");
 
 	}
 
